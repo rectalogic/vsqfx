@@ -5,7 +5,7 @@ project(vsqfx-offscreen)
 
 # Find Python
 #XXX need Development? check Python3_Development_FOUND
-find_package (Python3 COMPONENTS Interpreter Development.Module)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
 if(NOT Python3_Interpreter_FOUND)
     message(FATAL_ERROR "Python3 not found")
 endif()
@@ -60,11 +60,9 @@ macro(pyside_config option output_var)
 endmacro()
 
 # Query for the shiboken generator path, Python path, include paths and linker flags.
-pyside_config(--shiboken-module-path shiboken_module_path)
 pyside_config(--shiboken-generator-path shiboken_generator_path)
 pyside_config(--pyside-path pyside_path)
 pyside_config(--pyside-include-path pyside_include_dir 1)
-pyside_config(--python-include-path python_include_dir)
 pyside_config(--shiboken-generator-include-path shiboken_include_dir 1)
 pyside_config(--shiboken-module-shared-libraries-cmake shiboken_shared_libraries 0)
 pyside_config(--python-link-flags-cmake python_linking_data 0)
@@ -123,14 +121,30 @@ set(SOURCES
     offscreen_render_control.cpp
     ${generated_sources}
 )
-Python3_add_library(offscreen MODULE ${SOURCES})
+Python3_add_library(offscreen MODULE WITH_SOABI ${SOURCES})
 target_include_directories(offscreen PRIVATE ${shiboken_include_dir})
 target_include_directories(offscreen PRIVATE ${pyside_include_dir})
 target_include_directories(offscreen PRIVATE ${pyside_additional_includes})
 target_link_libraries(offscreen PUBLIC Qt6::Core Qt6::Gui Qt6::GuiPrivate Qt6::Quick Qt6::QuickPrivate)
+target_link_libraries(offscreen PRIVATE ${pyside_shared_libraries} ${shiboken_shared_libraries})
 qt_finalize_target(offscreen)
 
 add_dependencies(offscreen shiboken)
 
-# XXX don't want to install, need to bundle in wheel and reference pyside Qt libs
-# install(TARGETS offscreen LIBRARY)
+# ============= RPATH =============
+set(CMAKE_SKIP_BUILD_RPATH TRUE)
+
+if(UNIX AND NOT APPLE)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN/lib:$ORIGIN/../PySide6/:$ORIGIN/../PySide6/Qt/lib:$ORIGIN/../shiboken6")
+endif()
+
+if(APPLE)
+    set(CMAKE_INSTALL_RPATH "@loader_path/lib;@loader_path/../PySide6/;@loader_path/../PySide6/Qt/lib;@loader_path/../shiboken6")
+    set(MACOSX_RPATH TRUE)
+endif()
+# ============= RPATH =============
+
+install(TARGETS offscreen
+    EXCLUDE_FROM_ALL
+    COMPONENT python_modules
+    DESTINATION ${PY_BUILD_CMAKE_MODULE_NAME})
