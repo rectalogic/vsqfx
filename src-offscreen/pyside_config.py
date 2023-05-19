@@ -1,8 +1,6 @@
 # Copyright (C) 2022 The Qt Company Ltd.
 # SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
 
-# From https://code.qt.io/cgit/pyside/pyside-setup.git/tree/examples/utils/pyside_config.py
-
 import sysconfig
 from enum import Enum
 import glob

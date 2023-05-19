@@ -1,0 +1,6 @@
+<typesystem package="offscreen">
+    <load-typesystem name="typesystem_core.xml" generate="no"/>
+    <load-typesystem name="typesystem_gui_common.xml" generate="no"/>
+    <load-typesystem name="typesystem_quick.xml" generate="no"/>
+    <object-type name="OffscreenRenderControl"/>
+</typesystem>
