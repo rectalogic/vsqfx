@@ -57,7 +57,7 @@ bool OffscreenRenderControl::install(QQuickWindow *window)
     return true;
 }
 
-QImage OffscreenRenderControl::render()
+QImage OffscreenRenderControl::renderImage()
 {
     polishItems();
     beginFrame();

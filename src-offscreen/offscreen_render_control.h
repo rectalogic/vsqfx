@@ -11,7 +11,7 @@ class OffscreenRenderControl : public QQuickRenderControl {
 public:
     OffscreenRenderControl();
     bool install(QQuickWindow* window);
-    QImage render();
+    QImage renderImage();
 
 private:
     QScopedPointer<QRhiTexture> texture;

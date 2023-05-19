@@ -3,15 +3,7 @@ cmake_policy(VERSION 3.18)
 
 project(vsqfx-offscreen)
 
-# Find Python
-#XXX need Development? check Python3_Development_FOUND
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
-if(NOT Python3_Interpreter_FOUND)
-    message(FATAL_ERROR "Python3 not found")
-endif()
-message(STATUS "Using python: ${Python3_EXECUTABLE}")
-
-# Find Qt
 find_package(Qt6 COMPONENTS Core Gui Quick REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -117,6 +109,19 @@ set(pyside_additional_includes
     ${pyside_include_dir}/QtQml
 )
 
+# ============= RPATH =============
+set(CMAKE_SKIP_BUILD_RPATH TRUE)
+
+if(UNIX AND NOT APPLE)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN/lib:$ORIGIN/../PySide6/:$ORIGIN/../PySide6/Qt/lib:$ORIGIN/../shiboken6")
+endif()
+
+if(APPLE)
+    set(CMAKE_INSTALL_RPATH "@loader_path/lib;@loader_path/../PySide6/;@loader_path/../PySide6/Qt/lib;@loader_path/../shiboken6")
+    set(MACOSX_RPATH TRUE)
+endif()
+# ============= RPATH =============
+
 set(SOURCES
     offscreen_render_control.cpp
     ${generated_sources}
@@ -131,18 +136,6 @@ qt_finalize_target(offscreen)
 
 add_dependencies(offscreen shiboken)
 
-# ============= RPATH =============
-set(CMAKE_SKIP_BUILD_RPATH TRUE)
-
-if(UNIX AND NOT APPLE)
-    set(CMAKE_INSTALL_RPATH "$ORIGIN/lib:$ORIGIN/../PySide6/:$ORIGIN/../PySide6/Qt/lib:$ORIGIN/../shiboken6")
-endif()
-
-if(APPLE)
-    set(CMAKE_INSTALL_RPATH "@loader_path/lib;@loader_path/../PySide6/;@loader_path/../PySide6/Qt/lib;@loader_path/../shiboken6")
-    set(MACOSX_RPATH TRUE)
-endif()
-# ============= RPATH =============
 
 install(TARGETS offscreen
     EXCLUDE_FROM_ALL
