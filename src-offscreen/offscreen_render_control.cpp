@@ -1,12 +1,12 @@
-#include <QtLogging>
+#include "offscreen_render_control.h"
+#include <QImage>
 #include <QQuickRenderControl>
 #include <QQuickRenderTarget>
 #include <QQuickWindow>
-#include <QImage>
 #include <QSize>
 #include <QtGui/private/qrhi_p.h>
+#include <QtLogging>
 #include <QtQuick/private/qquickrendercontrol_p.h>
-#include "offscreen_render_control.h"
 
 OffscreenRenderControl::OffscreenRenderControl()
     : QQuickRenderControl()
@@ -17,7 +17,7 @@ OffscreenRenderControl::~OffscreenRenderControl()
 {
 }
 
-bool OffscreenRenderControl::install(QQuickWindow *window)
+bool OffscreenRenderControl::install(QQuickWindow* window)
 {
     if (initialized)
         return true;

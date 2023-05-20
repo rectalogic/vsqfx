@@ -26,7 +26,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PATH=${QT_PATH}/Tools/CMake/bin:${QT_PATH}/Tools/Ninja:${QT_PATH}/${QT_VERSION}/gcc_64/bin:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git build-essential ninja-build curl python3 python3-pip python3-venv locales
+    git build-essential ninja-build curl python3 python3-dev python3-pip python3-venv locales clang-format
 COPY --from=builder /tmp/to_install_libs.lst /tmp/to_install_libs.lst
 RUN cat /tmp/to_install_libs.lst | xargs apt install -y --no-install-suggests --no-install-recommends
 

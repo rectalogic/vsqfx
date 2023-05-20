@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QQuickRenderControl>
 #include <QImage>
+#include <QQuickRenderControl>
 #include <QScopedPointer>
 
 class QQuickWindow;
