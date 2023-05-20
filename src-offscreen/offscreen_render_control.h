@@ -1,15 +1,20 @@
 #pragma once
 
 #include <QQuickRenderControl>
-#include <QQuickWindow>
 #include <QImage>
 #include <QScopedPointer>
-#include <QtGui/private/qrhi_p.h>
+
+class QQuickWindow;
+class QRhiTexture;
+class QRhiRenderBuffer;
+class QRhiTextureRenderTarget;
+class QRhiRenderPassDescriptor;
 
 class OffscreenRenderControl : public QQuickRenderControl {
     Q_OBJECT
 public:
     OffscreenRenderControl();
+    ~OffscreenRenderControl();
     bool install(QQuickWindow* window);
     QImage renderImage();
 

@@ -1,6 +1,7 @@
 #include <QtLogging>
 #include <QQuickRenderControl>
 #include <QQuickRenderTarget>
+#include <QQuickWindow>
 #include <QImage>
 #include <QSize>
 #include <QtGui/private/qrhi_p.h>
@@ -10,7 +11,10 @@
 OffscreenRenderControl::OffscreenRenderControl()
     : QQuickRenderControl()
 {
-    
+}
+
+OffscreenRenderControl::~OffscreenRenderControl()
+{
 }
 
 bool OffscreenRenderControl::install(QQuickWindow *window)
